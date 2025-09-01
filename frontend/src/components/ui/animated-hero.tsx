@@ -66,7 +66,12 @@ function Hero() {
             </p>
           </div>
           <div className="flex flex-row gap-3">
-            <Button size="lg" className="gap-4" variant="outline">
+            <Button 
+              size="lg" 
+              className="gap-4" 
+              variant="outline"
+              onClick={() => window.open('https://www.daxa.ai/contact-us', '_blank')}
+            >
               Schedule Demo <PhoneCall className="w-4 h-4" />
             </Button>
             <Button size="lg" className="gap-4" onClick={() => navigate("/register")}>

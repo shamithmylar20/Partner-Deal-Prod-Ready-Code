@@ -42,73 +42,76 @@ export const Header = () => {
             </div>
           </div>
 
-          {/* Navigation - Only show when authenticated */}
-          {isAuthenticated && (
-            <nav className="hidden md:flex items-center relative">
-              <div className="flex items-center space-x-8 relative">
-                {navigationItems.map((item) => (
-                  <Link
-                    key={item.href}
-                    to={item.href}
-                    className="relative px-3 py-2 text-foreground hover:text-primary transition-colors duration-300 z-10"
-                  >
-                    {location.pathname === item.href && (
-                      <motion.div
-                        layoutId="lamp"
-                        className="absolute inset-0 bg-gradient-to-r from-primary/20 via-primary/30 to-primary/20 rounded-lg"
-                        style={{
-                          boxShadow: `
-                            0 0 20px hsl(var(--primary) / 0.3),
-                            0 0 40px hsl(var(--primary) / 0.2),
-                            0 0 60px hsl(var(--primary) / 0.1)
-                          `
-                        }}
-                        transition={{
-                          type: "spring",
-                          stiffness: 380,
-                          damping: 30
-                        }}
-                      />
-                    )}
-                    <span className="relative z-10">{item.label}</span>
-                  </Link>
-                ))}
-              </div>
-            </nav>
-          )}
-
-          {/* Auth Actions */}
-          <div className="flex items-center space-x-4">
-            {!isAuthenticated ? (
-              <>
-                <Button variant="ghost" size="sm" asChild>
-                  <Link to="/auth">Sign In</Link>
-                </Button>
-                <Button variant="default" size="sm" asChild>
-                  <Link to="/register">Register Deal</Link>
-                </Button>
-              </>
-            ) : (
-              <>
-                <span className="text-sm text-muted-foreground hidden sm:inline">
-                  Welcome, {user?.firstName} 
-                  {user?.role === 'admin' && <span className="text-primary font-medium ml-1">(Admin)</span>}
-                </span>
-                <Button variant="ghost" size="sm" asChild>
-                  <Link to="/profile">Profile</Link>
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => {
-                    logout();
-                    window.location.href = '/';
-                  }}
-                >
-                  Sign Out
-                </Button>
-              </>
+          {/* Right side - Navigation + Auth Actions */}
+          <div className="flex items-center space-x-6">
+            {/* Navigation - Only show when authenticated */}
+            {isAuthenticated && (
+              <nav className="hidden md:flex items-center relative">
+                <div className="flex items-center space-x-6 relative">
+                  {navigationItems.map((item) => (
+                    <Link
+                      key={item.href}
+                      to={item.href}
+                      className="relative px-3 py-2 text-foreground hover:text-primary transition-colors duration-300 z-10"
+                    >
+                      {location.pathname === item.href && (
+                        <motion.div
+                          layoutId="lamp"
+                          className="absolute inset-0 bg-gradient-to-r from-primary/20 via-primary/30 to-primary/20 rounded-lg"
+                          style={{
+                            boxShadow: `
+                              0 0 20px hsl(var(--primary) / 0.3),
+                              0 0 40px hsl(var(--primary) / 0.2),
+                              0 0 60px hsl(var(--primary) / 0.1)
+                            `
+                          }}
+                          transition={{
+                            type: "spring",
+                            stiffness: 380,
+                            damping: 30
+                          }}
+                        />
+                      )}
+                      <span className="relative z-10">{item.label}</span>
+                    </Link>
+                  ))}
+                </div>
+              </nav>
             )}
+
+            {/* Auth Actions */}
+            <div className="flex items-center space-x-4">
+              {!isAuthenticated ? (
+                <>
+                  <Button variant="ghost" size="sm" asChild>
+                    <Link to="/auth">Sign In</Link>
+                  </Button>
+                  <Button variant="default" size="sm" asChild>
+                    <Link to="/register">Register Deal</Link>
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <span className="text-sm text-muted-foreground hidden sm:inline">
+                    Welcome, {user?.firstName} 
+                    {user?.role === 'admin' && <span className="text-primary font-medium ml-1">(Admin)</span>}
+                  </span>
+                  <Button variant="ghost" size="sm" asChild>
+                    <Link to="/profile">Profile</Link>
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      logout();
+                      window.location.href = '/';
+                    }}
+                  >
+                    Sign Out
+                  </Button>
+                </>
+              )}
+            </div>
           </div>
 
           {/* Mobile Menu Button - Show when authenticated */}
