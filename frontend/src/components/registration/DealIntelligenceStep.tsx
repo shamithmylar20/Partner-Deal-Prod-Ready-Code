@@ -139,7 +139,7 @@ export const DealIntelligenceStep = ({ formData, setFormData }: DealIntelligence
                 <SelectItem value="mcp-server">MCP Server</SelectItem>
                 <SelectItem value="safe-rag">Safe RAG</SelectItem>
                 <SelectItem value="proxima-ai">Proxima AI</SelectItem>
-                <SelectItem value="pebblo-modules">Safe Inter (AI Gateway)</SelectItem>
+                <SelectItem value="Safe Inter">Safe Inter (AI Gateway)</SelectItem>
                 <SelectItem value="professional-services">Professional Services</SelectItem>
               </SelectContent>
             </Select>

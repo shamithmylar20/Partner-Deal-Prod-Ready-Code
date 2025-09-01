@@ -341,15 +341,53 @@ router.post('/deals/:id/approve', authenticateToken, async (req, res) => {
     const { id } = req.params;
     const { approver_name } = req.body;
 
-    // For now, return success message
-    // TODO: Implement actual Google Sheets update when updateRow is available
+    // Find the deal in Google Sheets
+    const deal = await googleSheetsService.findRowByValue('Deals', 'id', id);
+    
+    if (!deal) {
+      return res.status(404).json({
+        error: 'Deal not found',
+        message: 'No deal found with this ID'
+      });
+    }
+
+    // Get the sheet data to understand the column structure
+    const dealsData = await googleSheetsService.getSheetData('Deals');
+    const headers = dealsData[0];
+    
+    // Find the indices of columns we need to update
+    const statusIndex = headers.indexOf('status');
+    const approvedByIndex = headers.indexOf('approved_by');
+    const approvedAtIndex = headers.indexOf('approved_at');
+    
+    if (statusIndex === -1) {
+      return res.status(500).json({
+        error: 'Invalid sheet structure',
+        message: 'Status column not found in Deals sheet'
+      });
+    }
+
+    // Prepare the row data with updated values
+    const rowData = [...dealsData[deal._rowIndex - 1]]; // Get current row data
+    rowData[statusIndex] = 'approved';
+    
+    if (approvedByIndex !== -1) {
+      rowData[approvedByIndex] = approver_name || 'System';
+    }
+    
+    if (approvedAtIndex !== -1) {
+      rowData[approvedAtIndex] = new Date().toISOString();
+    }
+
+    // Update the row in Google Sheets
+    await googleSheetsService.updateRow('Deals', deal._rowIndex, rowData);
+
     res.json({
       message: 'Deal approved successfully',
       dealId: id,
       status: 'approved',
       approver: approver_name,
-      approved_at: new Date().toISOString(),
-      note: 'Deal approval recorded (Google Sheets update pending implementation)'
+      approved_at: new Date().toISOString()
     });
 
   } catch (error) {
@@ -377,16 +415,59 @@ router.post('/deals/:id/reject', authenticateToken, async (req, res) => {
     const { id } = req.params;
     const { approver_name, rejection_reason } = req.body;
 
-    // For now, return success message
-    // TODO: Implement actual Google Sheets update when updateRow is available
+    // Find the deal in Google Sheets
+    const deal = await googleSheetsService.findRowByValue('Deals', 'id', id);
+    
+    if (!deal) {
+      return res.status(404).json({
+        error: 'Deal not found',
+        message: 'No deal found with this ID'
+      });
+    }
+
+    // Get the sheet data to understand the column structure
+    const dealsData = await googleSheetsService.getSheetData('Deals');
+    const headers = dealsData[0];
+    
+    // Find the indices of columns we need to update
+    const statusIndex = headers.indexOf('status');
+    const approvedByIndex = headers.indexOf('approved_by');
+    const approvedAtIndex = headers.indexOf('approved_at');
+    const rejectionReasonIndex = headers.indexOf('rejection_reason');
+    
+    if (statusIndex === -1) {
+      return res.status(500).json({
+        error: 'Invalid sheet structure',
+        message: 'Status column not found in Deals sheet'
+      });
+    }
+
+    // Prepare the row data with updated values
+    const rowData = [...dealsData[deal._rowIndex - 1]]; // Get current row data
+    rowData[statusIndex] = 'rejected';
+    
+    if (approvedByIndex !== -1) {
+      rowData[approvedByIndex] = approver_name || 'System';
+    }
+    
+    if (approvedAtIndex !== -1) {
+      rowData[approvedAtIndex] = new Date().toISOString();
+    }
+    
+    if (rejectionReasonIndex !== -1 && rejection_reason) {
+      rowData[rejectionReasonIndex] = rejection_reason;
+    }
+
+    // Update the row in Google Sheets
+    await googleSheetsService.updateRow('Deals', deal._rowIndex, rowData);
+
     res.json({
       message: 'Deal rejected successfully',
       dealId: id,
       status: 'rejected',
       approver: approver_name,
       rejection_reason: rejection_reason,
-      rejected_at: new Date().toISOString(),
-      note: 'Deal rejection recorded (Google Sheets update pending implementation)'
+      rejected_at: new Date().toISOString()
     });
 
   } catch (error) {
