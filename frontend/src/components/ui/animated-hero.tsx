@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { MoveRight, PhoneCall } from "lucide-react";
+import { MoveRight, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 
@@ -22,6 +22,13 @@ function Hero() {
     }, 2000);
     return () => clearTimeout(timeoutId);
   }, [titleNumber, titles]);
+
+  const scrollToVideo = () => {
+    const videoSection = document.querySelector('section:has(video)');
+    if (videoSection) {
+      videoSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };
 
   return (
     <div className="w-full">
@@ -70,9 +77,9 @@ function Hero() {
               size="lg" 
               className="gap-4" 
               variant="outline"
-              onClick={() => window.open('https://www.daxa.ai/contact-us', '_blank')}
+              onClick={scrollToVideo}
             >
-              Schedule Demo <PhoneCall className="w-4 h-4" />
+              Watch Demo <Play className="w-4 h-4" />
             </Button>
             <Button size="lg" className="gap-4" onClick={() => navigate("/register")}>
               Register Deal <MoveRight className="w-4 h-4" />
