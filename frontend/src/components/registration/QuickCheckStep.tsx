@@ -57,11 +57,34 @@ const QuickCheckStep: React.FC<QuickCheckStepProps> = ({ formData, setFormData, 
     if (!value || value.trim() === '') {
       return 'Enter a valid domain';
     }
-    // Basic domain validation with common TLDs
-    const domainPattern = /^[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.(com|ai|org|net|io|co|biz|info|tech|dev|app|cloud|edu|gov|mil)$/i;
-    if (!domainPattern.test(value.trim())) {
-      return 'Enter a valid domain';
+    
+    // Clean the input - remove protocol and trailing slash if present
+    let cleanDomain = value.trim().toLowerCase();
+    cleanDomain = cleanDomain.replace(/^https?:\/\//, ''); // Remove http:// or https://
+    cleanDomain = cleanDomain.replace(/\/$/, ''); // Remove trailing slash
+    cleanDomain = cleanDomain.replace(/^www\./, ''); // Remove www. prefix for validation
+    
+    // More flexible domain validation pattern
+    // Allows: letters, numbers, hyphens, dots
+    // Must have at least one dot
+    // Domain parts must not start or end with hyphens
+    // TLD must be at least 2 characters
+    const domainPattern = /^[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$/;
+    
+    if (!domainPattern.test(cleanDomain)) {
+      return 'Enter a valid domain (e.g., example.com)';
     }
+    
+    // Additional checks
+    if (cleanDomain.length > 255) {
+      return 'Domain name too long';
+    }
+    
+    // Check for consecutive dots or hyphens
+    if (cleanDomain.includes('..') || cleanDomain.includes('--')) {
+      return 'Enter a valid domain (e.g., example.com)';
+    }
+    
     return null;
   };
 
@@ -289,7 +312,7 @@ const QuickCheckStep: React.FC<QuickCheckStepProps> = ({ formData, setFormData, 
             <Input
               id="domain"
               type="text"
-              placeholder="company.com"
+              placeholder="example.com"
               value={formData.domain || ''}
               onChange={(e) => handleInputChange('domain', e.target.value, validateDomain)}
               onBlur={(e) => handleBlur('domain', e.target.value, validateDomain)}

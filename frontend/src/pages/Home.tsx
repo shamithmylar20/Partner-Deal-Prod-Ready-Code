@@ -122,25 +122,48 @@ const Home = () => {
             </p>
           </div>
 
-          <div className="max-w-4xl mx-auto">
-            <div className="space-y-8">
-              {steps.map((step, index) => (
-                <div key={index} className="flex gap-6 group">
-                  <div className="flex-shrink-0">
-                    <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center text-primary-foreground font-bold">
-                      {step.number}
+          <div className="max-w-7xl mx-auto">
+            <div className="grid lg:grid-cols-2 gap-12 items-start">
+              {/* Steps List - Left Side */}
+              <div className="space-y-8">
+                {steps.map((step, index) => (
+                  <div key={index} className="flex gap-6 group">
+                    <div className="flex-shrink-0">
+                      <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center text-primary-foreground font-bold">
+                        {step.number}
+                      </div>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-xl font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
+                        {step.title}
+                      </h3>
+                      <p className="text-muted-foreground">
+                        {step.description}
+                      </p>
                     </div>
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-xl font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
-                      {step.title}
-                    </h3>
-                    <p className="text-muted-foreground">
-                      {step.description}
-                    </p>
+                ))}
+              </div>
+
+              {/* Video - Right Side */}
+              <div className="lg:sticky lg:top-8">
+                <div className="bg-card border rounded-lg overflow-hidden shadow-lg">
+                  <div className="p-4 border-b">
+                    <h3 className="text-lg font-semibold text-foreground">See It In Action</h3>
+                    <p className="text-sm text-muted-foreground">Watch how to register a deal in under 3 minutes</p>
+                  </div>
+                  <div className="relative">
+                    <video 
+                      controls 
+                      className="w-full h-auto"
+                      preload="metadata"
+                    >
+                      <source src="/register_deal.mp4" type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
                   </div>
                 </div>
-              ))}
+              </div>
             </div>
           </div>
         </div>
@@ -170,14 +193,16 @@ const Home = () => {
       <footer className="py-12 border-t border-border">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="mb-4 md:mb-0">
-              <span className="text-xl font-bold text-foreground">Daxa</span>
-              <span className="text-muted-foreground ml-2">Partner Portal</span>
+            <div className="mb-4 md:mb-0 flex items-center">
+              <img 
+                src="/daxa_black_logo.png" 
+                alt="Daxa" 
+                className="h-6 w-auto"
+              />
+              <span className="text-muted-foreground ml-3">Partner Portal</span>
             </div>
             <div className="flex space-x-6 text-sm text-muted-foreground">
-              <a href="/support" className="hover:text-foreground transition-colors">Support</a>
-              <a href="/privacy" className="hover:text-foreground transition-colors">Privacy</a>
-              <a href="/terms" className="hover:text-foreground transition-colors">Terms</a>
+              <a href="/privacy" className="hover:text-foreground transition-colors">Privacy and Policy</a>
             </div>
           </div>
         </div>

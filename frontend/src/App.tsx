@@ -13,6 +13,7 @@ import AuthCallback from "./pages/AuthCallback";
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminApproval from "./pages/AdminApproval";
+import Privacy from "./pages/Privacy";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +26,7 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/privacy" element={<Privacy />} />
 
             {/* Public route - redirect to dashboard if already logged in */}
             <Route

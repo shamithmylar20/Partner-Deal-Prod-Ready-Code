@@ -34,8 +34,12 @@ export const Header = () => {
           <div className="flex items-center space-x-4">
             <div className="flex-shrink-0">
               <Link to="/" className="flex items-center">
-                <span className="text-xl font-bold text-foreground">Daxa</span>
-                <span className="text-sm text-muted-foreground ml-2 hidden sm:inline">
+                <img 
+                  src="/daxa_black_logo.png" 
+                  alt="Daxa" 
+                  className="h-8 w-auto"
+                />
+                <span className="text-sm text-muted-foreground ml-3 hidden sm:inline">
                   Partner Portal
                 </span>
               </Link>

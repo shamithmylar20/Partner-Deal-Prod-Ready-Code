@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { FormField } from "@/components/form/FormField";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { AlertCircle } from "lucide-react";
 
 interface DealIntelligenceStepProps {
   formData: any;
@@ -18,6 +19,37 @@ export const DealIntelligenceStep = ({ formData, setFormData }: DealIntelligence
     primaryProduct: formData.primaryProduct || ""
   });
 
+  const [dateError, setDateError] = useState<string>("");
+
+  // Get today's date and max date (60 days from today)
+  const today = new Date();
+  const maxDate = new Date();
+  maxDate.setDate(today.getDate() + 60);
+
+  const formatDateForInput = (date: Date) => {
+    return date.toISOString().split('T')[0];
+  };
+
+  const validateDate = (dateString: string): string => {
+    if (!dateString) {
+      return "Expected close date is required";
+    }
+
+    const selectedDate = new Date(dateString);
+    const todayDate = new Date();
+    todayDate.setHours(0, 0, 0, 0); // Reset time to start of day
+
+    if (selectedDate < todayDate) {
+      return "Expected close date must be in the future";
+    }
+
+    if (selectedDate > maxDate) {
+      return "Expected close date cannot be more than 60 days from today";
+    }
+
+    return "";
+  };
+
   // Calculate deal value display
   const formatCurrency = (value: string) => {
     const num = parseFloat(value.replace(/[^0-9.]/g, ''));
@@ -27,6 +59,13 @@ export const DealIntelligenceStep = ({ formData, setFormData }: DealIntelligence
       currency: 'USD',
       minimumFractionDigits: 0,
     }).format(num);
+  };
+
+  // Handle date change with validation
+  const handleDateChange = (dateString: string) => {
+    const error = validateDate(dateString);
+    setDateError(error);
+    setDealDetails({...dealDetails, expectedCloseDate: dateString});
   };
 
   // Update form data when local state changes
@@ -114,13 +153,27 @@ export const DealIntelligenceStep = ({ formData, setFormData }: DealIntelligence
             <FormField
               label="Expected Close Date"
               required
-              tooltip="Projected close date. Must be in the future."
+              tooltip="Projected close date. Must be within 60 days from today."
             >
-              <Input
-                type="date"
-                value={dealDetails.expectedCloseDate}
-                onChange={(e) => setDealDetails({...dealDetails, expectedCloseDate: e.target.value})}
-              />
+              <div className="space-y-2">
+                <Input
+                  type="date"
+                  value={dealDetails.expectedCloseDate}
+                  onChange={(e) => handleDateChange(e.target.value)}
+                  min={formatDateForInput(today)}
+                  max={formatDateForInput(maxDate)}
+                  className={dateError ? 'border-red-500 focus:border-red-500' : ''}
+                />
+                {dateError && (
+                  <p className="text-sm text-red-500 flex items-center gap-1">
+                    <AlertCircle className="h-3 w-3" />
+                    {dateError}
+                  </p>
+                )}
+                <p className="text-xs text-muted-foreground">
+                  Must be between today and {maxDate.toLocaleDateString()}
+                </p>
+              </div>
             </FormField>
           </div>
 
@@ -139,6 +192,7 @@ export const DealIntelligenceStep = ({ formData, setFormData }: DealIntelligence
                 <SelectItem value="mcp-server">MCP Server</SelectItem>
                 <SelectItem value="safe-rag">Safe RAG</SelectItem>
                 <SelectItem value="proxima-ai">Proxima AI</SelectItem>
+                <SelectItem value="pebblo-modules">Pebblo Modules</SelectItem>
                 <SelectItem value="Safe Inter">Safe Inter (AI Gateway)</SelectItem>
                 <SelectItem value="professional-services">Professional Services</SelectItem>
               </SelectContent>
