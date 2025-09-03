@@ -7,7 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowLeft, Upload, Save, X, User, Building, Mail, MapPin, Shield, Calendar, CheckCircle, Lock } from "lucide-react";
+import { ArrowLeft, Save, X, User, Building, Mail, MapPin, Shield, Calendar, CheckCircle, Lock } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { Link } from "react-router-dom";
@@ -177,19 +177,6 @@ const Profile = () => {
     setIsEditing(false);
   };
 
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      // In a real app, this would upload to cloud storage
-      const mockUrl = URL.createObjectURL(file);
-      setFormData({ ...formData, avatarUrl: mockUrl });
-      toast({
-        title: "Profile Picture Updated",
-        description: "Your profile picture has been updated.",
-      });
-    }
-  };
-
   // Generate initials for avatar
   const getInitials = () => {
     const first = profileData.firstName?.[0] || '';
@@ -267,7 +254,7 @@ const Profile = () => {
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="space-y-6">
-          {/* Profile Header */}
+          {/* Profile Header - REMOVED IMAGE EDIT OPTION */}
           <Card>
             <CardHeader>
               <div className="flex items-center space-x-4">
@@ -278,17 +265,7 @@ const Profile = () => {
                       {getInitials()}
                     </AvatarFallback>
                   </Avatar>
-                  {isEditing && (
-                    <label className="absolute bottom-0 right-0 bg-primary text-primary-foreground rounded-full p-2 cursor-pointer hover:bg-primary/90 transition-colors">
-                      <Upload className="w-3 h-3" />
-                      <input
-                        type="file"
-                        className="hidden"
-                        accept="image/*"
-                        onChange={handleFileUpload}
-                      />
-                    </label>
-                  )}
+                  {/* Removed image edit button - no longer show upload option */}
                 </div>
                 <div className="flex-1">
                   <h1 className="text-2xl font-bold text-foreground">

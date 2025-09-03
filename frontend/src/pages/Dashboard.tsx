@@ -260,10 +260,6 @@ const Dashboard = () => {
                       <SelectItem value="rejected">Rejected</SelectItem>
                     </SelectContent>
                   </Select>
-                  <Button variant="outline">
-                    <Download className="w-4 h-4 mr-2" />
-                    Export
-                  </Button>
                 </div>
 
                 {/* Deals List */}

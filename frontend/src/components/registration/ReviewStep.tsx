@@ -17,6 +17,26 @@ export const ReviewStep = ({ formData, setFormData }: ReviewStepProps) => {
   // Use formData directly instead of local state
   const agreedToTerms = formData.agreedToTerms || false;
 
+  // Helper function to convert text to title case
+  const toTitleCase = (str: string) => {
+    if (!str) return 'Not specified';
+    return str.replace(/\w\S*/g, (txt) =>
+      txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+    );
+  };
+
+  // Helper function to format options/select values
+  const formatSelectValue = (value: string) => {
+    if (!value) return 'Not specified';
+    // Handle kebab-case, snake_case, and camelCase
+    return value
+      .replace(/[-_]/g, ' ')
+      .replace(/([a-z])([A-Z])/g, '$1 $2')
+      .replace(/\w\S*/g, (txt) =>
+        txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+      );
+  };
+
   // Update form data when terms agreement changes
   const handleTermsChange = (checked: boolean) => {
     console.log('Terms checkbox changed:', checked);
@@ -111,29 +131,29 @@ const { errors: debugErrors, isValid: debugIsValid } = useFormValidation(formDat
           <div className="grid md:grid-cols-2 gap-4">
             <div>
               <p className="text-sm font-medium text-muted-foreground">Company Name</p>
-              <p className="text-foreground">{formData.companyName || 'Not specified'}</p>
+              <p className="text-foreground">{toTitleCase(formData.companyName)}</p>
             </div>
             <div>
               <p className="text-sm font-medium text-muted-foreground">Domain</p>
-              <p className="text-foreground">{formData.domain || 'Not specified'}</p>
+              <p className="text-foreground">{formData.domain?.toLowerCase() || 'Not specified'}</p>
             </div>
           </div>
 
           {formData.customerLegalName && (
             <div>
               <p className="text-sm font-medium text-muted-foreground">Legal Entity Name</p>
-              <p className="text-foreground">{formData.customerLegalName}</p>
+              <p className="text-foreground">{toTitleCase(formData.customerLegalName)}</p>
             </div>
           )}
 
           <div className="grid md:grid-cols-2 gap-4">
             <div>
               <p className="text-sm font-medium text-muted-foreground">Industry</p>
-              <p className="text-foreground">{formData.customerIndustry || 'Not specified'}</p>
+              <p className="text-foreground">{formatSelectValue(formData.customerIndustry)}</p>
             </div>
             <div>
               <p className="text-sm font-medium text-muted-foreground">Location</p>
-              <p className="text-foreground">{formData.customerLocation || 'Not specified'}</p>
+              <p className="text-foreground">{toTitleCase(formData.customerLocation)}</p>
             </div>
           </div>
         </CardContent>
@@ -148,22 +168,22 @@ const { errors: debugErrors, isValid: debugIsValid } = useFormValidation(formDat
           <div className="grid md:grid-cols-2 gap-4">
             <div>
               <p className="text-sm font-medium text-muted-foreground">Partner Company</p>
-              <p className="text-foreground">{formData.partnerCompany || 'Not specified'}</p>
+              <p className="text-foreground">{toTitleCase(formData.partnerCompany)}</p>
             </div>
             <div>
               <p className="text-sm font-medium text-muted-foreground">Territory</p>
-              <p className="text-foreground">{formData.territory || 'Not specified'}</p>
+              <p className="text-foreground">{formatSelectValue(formData.territory)}</p>
             </div>
           </div>
 
           <div className="grid md:grid-cols-2 gap-4">
             <div>
               <p className="text-sm font-medium text-muted-foreground">Submitter Name</p>
-              <p className="text-foreground">{formData.submitterName || 'Not specified'}</p>
+              <p className="text-foreground">{toTitleCase(formData.submitterName)}</p>
             </div>
             <div>
               <p className="text-sm font-medium text-muted-foreground">Submitter Email</p>
-              <p className="text-foreground">{formData.submitterEmail || 'Not specified'}</p>
+              <p className="text-foreground">{formData.submitterEmail?.toLowerCase() || 'Not specified'}</p>
             </div>
           </div>
         </CardContent>
@@ -186,7 +206,7 @@ const { errors: debugErrors, isValid: debugIsValid } = useFormValidation(formDat
             </div>
             <div>
               <p className="text-sm font-medium text-muted-foreground">Deal Stage</p>
-              <p className="text-foreground">{formData.dealStage || 'Not specified'}</p>
+              <p className="text-foreground">{formatSelectValue(formData.dealStage)}</p>
             </div>
           </div>
 
@@ -195,13 +215,13 @@ const { errors: debugErrors, isValid: debugIsValid } = useFormValidation(formDat
           <div className="space-y-3">
             <div>
               <p className="text-sm font-medium text-muted-foreground">Contract Type</p>
-              <p className="text-foreground">{formData.contractType || 'Not specified'}</p>
+              <p className="text-foreground">{formatSelectValue(formData.contractType)}</p>
             </div>
 
             {formData.primaryProduct && (
               <div>
                 <p className="text-sm font-medium text-muted-foreground">Primary Product</p>
-                <p className="text-foreground">{formData.primaryProduct}</p>
+                <p className="text-foreground">{formatSelectValue(formData.primaryProduct)}</p>
               </div>
             )}
           </div>

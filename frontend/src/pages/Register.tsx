@@ -364,15 +364,6 @@ const Register = () => {
                         <span>Saving...</span>
                       </div>
                     )}
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={handleAutoSave}
-                      disabled={isAutoSaving}
-                    >
-                      <Save className="w-4 h-4 mr-1" />
-                      Save Draft
-                    </Button>
                   </div>
                 </div>
               </CardHeader>
