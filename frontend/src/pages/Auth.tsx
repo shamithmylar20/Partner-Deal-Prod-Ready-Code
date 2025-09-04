@@ -47,7 +47,7 @@ const Auth = () => {
           <CardHeader>
             <CardTitle>Sign In or Register</CardTitle>
             <CardDescription>
-              Use your corporate Google or Microsoft account to access the partner portal. 
+              Use your corporate Google account to access the partner portal. 
               New users will be automatically registered.
             </CardDescription>
           </CardHeader>
@@ -71,7 +71,7 @@ const Auth = () => {
 
               <Separator className="my-4" />
               
-              <Button 
+              {/* <Button 
                 variant="outline" 
                 className="w-full h-12 text-base"
                 onClick={() => handleSSOLogin("Microsoft")}
@@ -81,7 +81,7 @@ const Auth = () => {
                   <path fill="currentColor" d="M11.4 24H0V12.6h11.4V24zM24 24H12.6V12.6H24V24zM11.4 11.4H0V0h11.4v11.4zM24 11.4H12.6V0H24v11.4z"/>
                 </svg>
                 Continue with Microsoft
-              </Button>
+              </Button> */}
             </div>
 
             {/* Information Section */}
