@@ -120,7 +120,7 @@ const Profile = () => {
   const loadUserDeals = async () => {
     try {
       setLoadingDeals(true);
-      const data = await apiClient.request('/admin/profile/deals');
+      const data = await apiClient.getDeals();
       setUserDeals(data.deals || []);
       
       // Update deal count in profile data
